@@ -23,23 +23,19 @@ class QuestionModelTest(TestCase):
 
 	def test_question_text_uniqueness(self):
 		create_question(QUESTION_TEXT, 0)
-
 		with self.assertRaises(ValidationError) as raised:
-			question = create_question(QUESTION_TEXT, 0)
-			question.validate_constraints()
-
+		    question = create_question(QUESTION_TEXT, 0)
+		    question.validate_constraints()
 		self.assertEqual(ValidationError, type(raised.exception))
 
-	def test_was_published_recently_with_current_question(self):
-		time = timezone.now()
-		future_question = Question(pub_date=time)
-
+    def test_was_published_recently_with_current_question(self):
+	    time = timezone.now()
+	    future_question = Question(pub_date=time)
 		self.assertIs(future_question.was_published_recently(), True)
 
 	def test_was_published_recently_with_past_question(self):
 		time = timezone.now() + datetime.timedelta(days=-30)
 		future_question = Question(pub_date=time)
-
 		self.assertIs(future_question.was_published_recently(), False)
 
 	def test_was_published_recently_with_future_question(self):
